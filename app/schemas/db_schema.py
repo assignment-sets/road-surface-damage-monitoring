@@ -22,6 +22,7 @@ class ProcessedImageRecord(BaseModel):
     rdi_score: float
     priority_status: PriorityStatus
     damage_details: List[DamageDetail] = []
+    resolved: bool = False
 
     # S3 URLs
     original_image_url: Optional[str] = None
