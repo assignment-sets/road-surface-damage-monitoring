@@ -13,6 +13,9 @@ async def push_to_queue(payload: RedisQueuePayload):
         # Convert Pydantic object to JSON string and push to the right side of the list
         await redis_client.rpush(queue_name, payload.to_redis_json())
         
+        # TTL 24 hrs
+        await redis_client.expire(queue_name, 86400)
+        
         logger.info(f"🚀 Pushed image {payload.image_id} to Redis: [{queue_name}]")
         
     except Exception as e:
