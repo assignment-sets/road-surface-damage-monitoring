@@ -10,4 +10,5 @@ dependencies = [
     "motor>=3.7.1",
     "python-dotenv>=1.2.2",
     "redis>=7.3.0",
+    "ultralytics>=8.4.21",
 ]
