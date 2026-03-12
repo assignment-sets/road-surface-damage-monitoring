@@ -1,7 +1,7 @@
 .PHONY: dev
 
 dev:
-	python3 -m $(subst /,.,$(filter-out $@,$(MAKECMDGOALS)))
+	uv run --env-file .env python -m $(subst /,.,$(filter-out $@,$(MAKECMDGOALS)))
 
 %:
 	@:
