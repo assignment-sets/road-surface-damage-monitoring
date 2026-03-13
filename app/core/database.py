@@ -2,7 +2,6 @@ import os
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from dotenv import load_dotenv
 
-# Import your custom logger
 from app.core.logger import logger
 
 load_dotenv()
