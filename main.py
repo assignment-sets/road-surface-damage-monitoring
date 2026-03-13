@@ -7,13 +7,16 @@ from app.core.logger import logger
 from app.core.database import connect_to_mongo, close_mongo_connection
 
 from app.api.routes.detection import router as detection_router
-from app.api.routes.dashboard import router as dashboard_router 
+from app.api.routes.dashboard import router as dashboard_router
+
+from app.utils.cleanup import cleanup_temp_uploads
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- STARTUP ---
     logger.info("🚀 Booting up the RDI Backend...")
+    cleanup_temp_uploads()
     try:
         await connect_to_mongo()
     except Exception as e:
