@@ -7,13 +7,14 @@ from app.schemas.db_schema import (
     DashboardDamageSummary,
     DashboardUrls,
 )
+from typing import Optional
 
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-MONGO_COLLECTION: str = os.getenv("MONGO_COLLECTION_NAME")
+MONGO_COLLECTION: str = os.getenv("MONGO_COLLECTION_NAME", "processed_jobs")
 
 # Standard RDD2020 Class Definitions
 RDD_LABELS = {
@@ -111,22 +112,30 @@ async def toggle_resolved_status(image_id: str) -> bool:
         raise e
 
 
-async def fetch_paginated_records(page: int = 1, limit: int = 10) -> dict:
+async def fetch_paginated_records(
+    page: int = 1, limit: int = 10, resolved_status: Optional[bool] = None
+) -> dict:
     """Fetches, formats, and paginates the processed records for the dashboard."""
     try:
         db = get_database()
+
         collection = db[MONGO_COLLECTION]
 
         skip = (page - 1) * limit
 
-        # Sort by created_at descending (newest first)
-        cursor = collection.find({}).sort("created_at", -1).skip(skip).limit(limit)
+        # 1. Build the dynamic query dictionary
+        query = {}
+        if resolved_status is not None:
+            query["resolved"] = resolved_status
 
-        # Motor requires a length argument for to_list
+        # 2. Apply the query to the find operation
+        cursor = collection.find(query).sort("created_at", -1).skip(skip).limit(limit)
+
         raw_docs = await cursor.to_list(length=limit)
-        total_count = await collection.count_documents({})
 
-        # Pass docs through the formatter we wrote earlier
+        # 3. Apply the exact same query to the document count
+        total_count = await collection.count_documents(query)
+
         formatted_docs = [format_for_dashboard(doc) for doc in raw_docs]
 
         return {
