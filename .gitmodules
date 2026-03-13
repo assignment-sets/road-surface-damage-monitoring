@@ -1,0 +1,3 @@
+[submodule "ui"]
+	path = ui
+	url = https://github.com/assignment-sets/road-surface-damage-monitoring-ui.git
