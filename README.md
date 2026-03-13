@@ -34,6 +34,7 @@ Thresholds:
 ## Model & Dataset
 
 - **Architecture**: YOLOv8m
+- **Epochs for final model**: 70 
 - **Dataset**: [RDD2020 Dataset](https://www.kaggle.com/datasets/ziedkelboussi/rdd2020-dataset)
 - **Training Notebook**: [Kaggle Implementation](https://www.kaggle.com/code/gourab2004m/notebook994ee35111)
 - **Weights & Logs**: [Google Drive Link](https://drive.google.com/drive/folders/1vNYOoQszMie6hffJaICJ9it_989XKbfq?usp=sharing)
